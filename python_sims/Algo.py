@@ -5,18 +5,14 @@ import numpy as np
 
 
 class AlgoClass:
-    def __init__(self, goal_sales_per_block, initial_price, number_of_blocks, update_freq, profit=0):
+    def __init__(self, goal_sales_per_block, initial_price, update_freq, profit=0):
         self.goal_sales_per_block = goal_sales_per_block
-        self.number_of_blocks = number_of_blocks
         self.price = initial_price
         self.block_arr = []
         self.profit = profit
         self.update_freq = update_freq
-        self.current_wts = 0
         self.initial_price = initial_price
         self.current_ema = 0
-        self.ema_index = 1
-        self.last_positive_rate_index = 0
         self.profit = 0
         self.ema_array = []
         self.current_dema = 0
@@ -31,7 +27,6 @@ class AlgoClass:
         else:
             ema = 0.2 * most_recent_sales + self.current_ema * (1 - 0.2)
             dema = 2 * ema - (0.2 * self.ema_array[-1] + self.current_dema * (1 - 0.2))
-        self.ema_index += 1
         self.current_ema = ema
         self.current_dema = dema
         self.ema_array.append(ema)
@@ -51,7 +46,6 @@ class AlgoClass:
         if (ratio > 1):
             self.price = self.price * \
                 (self.calc_wts_no_call() / self.goal_sales_per_block)
-            self.last_positive_rate_index = len(self.block_arr)
         elif (ratio < 1):
             self.price = self.price * 0.95
         else:
@@ -83,9 +77,4 @@ class block:
 
     def set_sales(self, num):
         self.sales = num
-    
-    def to_dict(self):
-        return {
-            'sales': self.sales,
-        }
 
