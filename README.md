@@ -1,46 +1,22 @@
-# Advanced Sample Hardhat Project
+# Responsive NFT Mint Price Optimization
 
-This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
+This repo is my submission to LionHacks 2022. I worked alone on it, and received 0 outside help. 
 
-The project comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts. It also comes with a variety of other tools, preconfigured to work with the project code.
+# Problem Explanation:
 
-Try running some of the following tasks:
+NFT Launches are almost always statically priced, usually anywhere from 0.05ETH to 0.5ETH per mint. However, this has always stricken me as extremely inefficient and poorly optimized. Launches that are extremely well received and sell out in seconds are leaving a lot of money on the table with a statically priced model. And NFT launches that are not as well received or hyped often struggle to sell out partially because of a mispriced launch price. 
 
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-npx hardhat help
-REPORT_GAS=true npx hardhat test
-npx hardhat coverage
-npx hardhat run scripts/deploy.ts
-TS_NODE_FILES=true npx ts-node scripts/deploy.ts
-npx eslint '**/*.{js,ts}'
-npx eslint '**/*.{js,ts}' --fix
-npx prettier '**/*.{json,sol,md}' --check
-npx prettier '**/*.{json,sol,md}' --write
-npx solhint 'contracts/**/*.sol'
-npx solhint 'contracts/**/*.sol' --fix
-```
+# Solution:
 
-# Etherscan verification
+My algorithm adjusts the price of minting in real time in response to demand. I've included a PDF file called Lionhacks explaining the specifics, but here's a broad overview:
+The NFT team will estimate what they think is a fair amount of time (measured in blocks) for their launch to sell out in, given their perceived hype and demand. The algorithm will then compare the selling rate, which is calculated using an algorithm I developed, to the target selling rate. If there's a mismatch in either direction, the algorithm will increase or decrease the price accordingly. 
 
-To try out Etherscan verification, you first need to deploy a contract to an Ethereum network that's supported by Etherscan, such as Ropsten.
+I've included a Python notebook in python_sims that simulates NFT launches with my algorithm and without. Consistently, the total profit/revenue received by the team is about twice as high as they would've received with a statically priced launch. 
 
-In this project, copy the .env.example file to a file named .env, and then edit it to fill in the details. Enter your Etherscan API key, your Ropsten node URL (eg from Alchemy), and the private key of the account which will send the deployment transaction. With a valid .env file in place, first deploy your contract:
+Unfortunately, due to time constraints (and the fact that I'm working alone), I wasn't able to finish the solidity implementation. However, I am certain it can be done in a gas efficient manner, and I plan to continue working on this afterwards.
 
-```shell
-hardhat run --network ropsten scripts/deploy.ts
-```
+# What I learned:
 
-Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
+Before this hackathon, I had never in my life used Python. During the hackathon, I taught myself Python, I taught myself the matplotlib Library, which I used to create and plot my simulations. I conducted a ton of research into NFT launches, Price adjustment algorithms, and Moving Average algorithms in order to create my final product. I think it definitely needs refinement, and there are aspects I would love to have had the chance to implement (A Price Elasticity of Demand based price adjustment model is an idea I've been toying around with.) 
 
-```shell
-npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
-```
-
-# Performance optimizations
-
-For faster runs of your tests and scripts, consider skipping ts-node's type checking by setting the environment variable `TS_NODE_TRANSPILE_ONLY` to `1` in hardhat's environment. For more details see [the documentation](https://hardhat.org/guides/typescript.html#performance-optimizations).
+If you're a judge and you're reading this, I hope you enjoy reading my work, and I thank you for taking the time to help out with the hackathon!
