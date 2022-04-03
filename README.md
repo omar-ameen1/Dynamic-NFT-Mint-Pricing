@@ -1,4 +1,4 @@
-# Responsive NFT Mint Price Optimization
+# Real Time NFT Mint Price Optimization
 
 This repo is my submission to LionHacks 2022. I worked alone on it, and received 0 outside help. 
 
